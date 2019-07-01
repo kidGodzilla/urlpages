@@ -48,7 +48,7 @@
             margin-top: 1px;
         }
 
-        #topbar button, #topbar a, .pens a {
+        #topbar button, #topbar a {
             background: #282828;
             user-select: none;
             float: right;
@@ -64,11 +64,15 @@
             cursor: pointer;
         }
         /*#topbar form button:first-of-type { margin-right: 15px; }*/
-        #topbar button:hover, #topbar a:hover, .pens a {
+        #topbar button:hover, #topbar a:hover {
             background: #333;
         }
         .pens a {
-            float: initial;
+            color: #e9e9e9;
+            /*text-decoration: none;*/
+        }
+        .pens a:hover {
+            color: #fff;
         }
 
         iframe {
@@ -193,10 +197,15 @@
 
         <p>That means your pens can't be taken down, cost nothing, and once shared, anyone who obtains the URL can modify it (forever).</p>
 
-        <p>If this website is taken down, another can take it's place. The code is open-source (GitHub).</p>
+        <p>If this website is taken down, another can take it's place. The code is open-source (<a href="https://github.com/kidGodzilla/urlpages" target="_blank">GitHub</a>).</p>
 
+        <p>Based on a project by <a href="https://github.com/jstrieb" target="_blank">@jstrieb</a>, called <a href="https://jstrieb.github.io/urlpages" target="_blank">URL Pages</a> (<a href="https://github.com/jstrieb/urlpages" target="_blank">Source code</a>)</p>
 
+        <p>We curate homepage posts by retweeting posts shared on Twitter with the tag <a href="https://twitter.com/search?q=%23jspen" target="_blank">#jspen</a>.</p>
 
+        <p>Show us what you've made.  <a href="https://twitter.com/intent/tweet?text=I made this! – ( paste a link to your pen here )&hashtags=jspen" target="_blank">Tweet to us</a></p>
+
+        <p>Have fun!</p>
     </div>
 </div>
 
