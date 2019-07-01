@@ -151,7 +151,7 @@
 <a class="pen" href="{{url}}">
     <iframe src="{{src}}" frameborder="0"></iframe>
     <h3>{{title}}</h3>
-    <h5>{{author}}</h5>
+    <h5>{{author}} – {{ago}}</h5>
 </a>
 
 <div class="pens"></div>
@@ -243,10 +243,8 @@
         saved.forEach(function (item) {
             if (!item.title || item.title == 'undefined') item.title = 'Untitled Pen';
 
-            if (i >= min && i < max) {
-                console.log(item);
-                $('.pens').append(template.replace('{{author}}', item.author ? ('by ' + item.author) : '').replace('{{url}}', item.url).replace('{{src}}', item.url).replace('{{title}}', item.title));
-            }
+            if (i >= min && i < max)
+                $('.pens').append(template.replace('{{ago}}', item.ago).replace('{{author}}', item.author ? ('by ' + item.author) : '').replace('{{url}}', item.url).replace('{{src}}', item.src).replace('{{title}}', item.title));
 
             i++;
         });
@@ -278,6 +276,7 @@
             lang: 'en',
             customCallback: function (data) {
 
+                window.tweets = data;
                 // console.log(data);
 
                 if (data) data.forEach(function (tweet) {
@@ -303,11 +302,13 @@
                         if (title) title = title.split('<')[0];
 
                         saved.push({
-                            url: '/#' + data,
+                            url: '/preview#' + data,
+                            src: '/#' + data,
                             //data: data,
                             //page: pageData,
                             author: author,
-                            title: title
+                            title: title,
+                            ago: tweet.time.trim() + ' ago'
                         });
 
                         renderPage(window.page);

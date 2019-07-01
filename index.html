@@ -10,7 +10,7 @@ function b64DecodeUnicode(str) {
 
 if (window.location.hash) {
   // Try to get page data from the URL if possible
-  var hash = window.location.hash.slice(1);
+  var hash = location.hash.slice(1);
   var data = b64DecodeUnicode(hash);
   document.write(decodeURIComponent(data));
 } else {
