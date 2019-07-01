@@ -201,7 +201,7 @@
     <a onclick="del()">Delete</a>
     <a onclick="fork()">Fork</a>
     <a class="save hidden" onclick="save()">Save</a>
-    <a class="share" target="_blank">Share</a>
+    <a class="share" onclick="updateShareLink()" target="_blank">Share</a>
     <!--<a href="#">Like</a>-->
 
     <a href="/editor">New</a>
@@ -321,22 +321,30 @@
             if (res && res.key) {
                 var url = 'http://jspen.b-cdn.net/s/#' + res.key;
                 copyToClipboard(url);
+                toggleShareMenu();
                 alert(url + ' copied to clipboard.');
                 console.log(url);
             }
         });
     }
 
-    function getShareShortUrl () {
+    function makeShortUrl (cb) {
         var d = `/#${ b64EncodeUnicode(encodeURIComponent(getHTML(data))) }`;
 
         $.post('https://md5blobs.mr365.co/', { data: d }, function (res) {
             if (res && res.key) {
                 var url = 'http://jspen.b-cdn.net/s/#' + res.key;
-                copyToClipboard(url);
-                alert(url + ' copied to clipboard.');
-                console.log(url);
+                cb(url);
             }
+        });
+    }
+
+    function getShareShortUrl () {
+        makeShortUrl(function (url) {
+            copyToClipboard(url);
+            toggleShareMenu();
+            alert(url + ' copied to clipboard.');
+            console.log(url);
         });
     }
 
@@ -496,9 +504,12 @@
         var shareText = '';
         if (window.data.title) shareText += window.data.title;
         if (window.data.author) shareText += ' by ' + window.data.author;
-        shareText += ' - [Paste Short Link to Preview Here]';
 
-        $('.share').attr('href', `https://twitter.com/intent/tweet?text=${ encodeURIComponent(shareText) }&hashtags=jspen`);
+        makeShortUrl(function (url) {
+            shareText += ' - ' + url;
+            $('.share').attr('href', `https://twitter.com/intent/tweet?text=${ encodeURIComponent(shareText) }&hashtags=jspen`);
+            setTimeout(function () { $('.share').click() }, 100);
+        });
     }
 
     /* Run each time a key is pressed on a text box */
@@ -533,7 +544,7 @@
         if (qrcode) try { qrcode.makeCode(encodeURIComponent(getViewLink(html)), { width: 180, height: 180, correctLevel : QRCode.CorrectLevel.H }); $('#qrcode').css('height', '180px') } catch(e){}
 
         // Update share link
-        updateShareLink();
+        // updateShareLink();
 
         // Update the <iframe> to display the generated page
         // Todo: Update with a > 8-bit safe solution for updates
@@ -581,7 +592,7 @@
         try { window.saved = JSON.parse(getLocalStorage('_saved')) } catch(e){}
         try { if (!window.data.author) window.data.author = getLocalStorage('_author') || 'Anonymous' } catch(e){}
         if (window.data.author) $('#topbar h5 span').text(window.data.author);
-        updateShareLink();
+        //updateShareLink();
 
         $(document).keydown(function(event) {
             if ((event.ctrlKey || event.metaKey) && event.which == 83) {
