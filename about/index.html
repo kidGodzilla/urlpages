@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Pens</title>
+    <title>About</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
 
@@ -81,7 +81,7 @@
 
         .pens {
             margin-left: 2px;
-            margin-top: 48px;
+            margin-top: 20px;
         }
 
         .pen {
@@ -127,6 +127,22 @@
             text-align: center;
         }
 
+        .about {
+            padding: 15px 30px;
+            margin: 0 auto;
+            max-width: 800px;
+            background: #2c2c2c;
+            color: #e9e9e9;
+            border-radius: 5px;
+        }
+
+        .about > * {
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 
@@ -142,133 +158,49 @@
     </a>
 
     <div style="display:inline-block;width:60%;">
-        <h3>My Pens</h3>
-        <h5><span>Anonymous</span></h5>
+        <h3>About</h3>
+        <h5><span>A little bit about JSPen</span></h5>
     </div>
 </div>
 
 <a class="pen" href="{{url}}">
     <iframe src="{{src}}" frameborder="0"></iframe>
     <h3>{{title}}</h3>
+    <h5>{{author}}</h5>
 </a>
 
-<div class="pens"></div>
+<div class="pens">
+    <div class="about">
+
+        <h1>JSPen creates permanent web pages</h1>
+        <h2>That you can share anywhere.</h2>
+        <br/>
+
+        <p>It doesn't aim to be much, but you might find a couple of features interesting:</p>
+
+        <ol>
+            <li>
+                Your entire pen is stored in the URL you share. Nothing is hosted anywhere.
+            </li>
+            <li>
+                We pull front page posts from Twitter (tweet to @HTMLPins), and use url shortners for share links.
+            </li>
+            <li>
+                There's no backend at all.
+            </li>
+        </ol>
+        <br/>
+
+        <p>That means your pens can't be taken down, cost nothing, and once shared, anyone who obtains the URL can modify it (forever).</p>
+
+        <p>If this website is taken down, another can take it's place. The code is open-source (GitHub).</p>
+
+
+
+    </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src=""></script>
 
-<script>
-    function b64EncodeUnicode(str) {
-        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-            return String.fromCharCode(parseInt(p1, 16))
-        }))
-    }
-
-    function b64DecodeUnicode(str) {
-        return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-        }).join(''))
-    }
-
-    function getSearchParam (key) {
-        var val = false;
-        if (location.search.indexOf(key) !== -1) val = location.search.split(key + '=')[1];
-        if (val && val.indexOf('&') !== -1) val = val.split('&')[0];
-        return val;
-    }
-
-    function getLocalStorage(key) {
-        var result = '';
-
-        try { result = localStorage.getItem(key) } catch (e) {
-            console.log(e);
-            return result;
-        }
-
-        return result;
-    }
-
-    function setLocalStorage(key, value) {
-        if (!key || !value) return;
-
-        try { localStorage.setItem(key, value) } catch (e) { console.log(e) }
-    }
-
-    function rstr () {
-        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
-
-    /* Return the HTML string for the page */
-    function getHTML(data) {
-        if (!window.data) window.data = {};
-        // Generate an HTML page from the contents of each <textarea>
-        var pageData = `<!DOCTYPE html><head><title>${ data.title || 'New Pen' }</title><meta name="author" content="${ data.author || '' }"><style>${ data.css }</style></head><body>${ data.html }<script>${ data.js }</scr${ '' }ipt></bo${ '' }dy>`;
-
-        return pageData;
-    }
-
-    /* Return a link to view the page */
-    function getViewLink(pageData) {
-        return `${ location.protocol }//${ location.host }/#${ b64EncodeUnicode(pageData) }`;
-    }
-
-    function gett (url, cb) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                if (cb && typeof cb == 'function') cb(xhr.responseText);
-            } else {
-                console.log('Request failed', xhr.status);
-            }
-        };
-        xhr.send();
-    }
-
-    var template = document.querySelector('.pen').outerHTML;
-
-
-    function renderPage (page) {
-        var count = Object.keys(saved).length;
-        if (!window.saved) return;
-        $('.pens').html('');
-        var perPage = 6;
-        var i = 0;
-
-        var max = (page + 1) * perPage;
-        var min = page * perPage;
-
-        for (var k in saved) {
-            var item = saved[k];
-
-            if (!item.title || item.title == 'undefined') item.title = 'Untitled Pen';
-
-            var html = encodeURIComponent(getHTML(item));
-            var url = "editor#" + b64EncodeUnicode(JSON.stringify(item));
-            // var src = `data:text/html,${ html }`;
-            var src = '/#' + b64EncodeUnicode(html);
-
-            if (i >= min && i < max)
-                $('.pens').append(template.replace('{{url}}', url).replace('{{src}}', src).replace('{{title}}', item.title));
-
-            i++;
-        }
-
-        $('.pens').append('<div class="nav"></div>');
-
-        if (page) $('.nav').append('<a onclick="renderPage(' + (page - 1) + ')">&larr;</a>');
-        if (count > (page + 1) * perPage) $('.nav').append('<a onclick="renderPage(' + (page + 1) + ')">&rarr;</a>');
-    }
-
-    $(document).ready(function () {
-        $('.pen').remove();
-        window.page = 0;
-
-        try { window.saved = JSON.parse(getLocalStorage('_saved')) } catch(e){}
-
-        renderPage(page);
-    });
-
-</script>
 </body>
 </html>
