@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Redirecting</title>
+</head>
+<body>
+<noscript>You must have Javascript enabled.</noscript>
+
+<script>
+    function gett (url, cb) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                if (cb && typeof cb == 'function') cb(xhr.responseText);
+            } else {
+                console.log('Request failed', xhr.status);
+            }
+        };
+        xhr.send();
+    }
+
+    var server = 'http://localhost:1112';
+    var hash = location.hash.slice(1);
+
+    gett('https://md5s.b-cdn.net/' + hash + '.t', function (data) {
+       if (data && !data.indexOf('/')) location.href = server + data;
+    });
+</script>
+</body>
+</html>

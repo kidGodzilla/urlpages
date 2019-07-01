@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>URL Pages Editor</title>
+    <title>JSPen.co Editor: New Pen</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
 
@@ -15,6 +15,7 @@
             font-family: Lato, sans-serif;
             height: 100vh;
             background: #222;
+            overflow: hidden;
         }
 
         html, body {
@@ -65,6 +66,30 @@
             display: inline;
         }
 
+        .main {
+            height: calc(100% - 50px);
+            overflow: hidden;
+        }
+
+        .splitter {
+            /*flex: 0 0 auto;*/
+            width: 18px;
+            background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #535353;
+            min-height: 200px;
+            cursor: col-resize;
+            display: inline-block;
+            height: 100%;
+        }
+        .splitter.horizontal {
+            /*flex: 0 0 auto;*/
+            height: 18px;
+            min-height: initial;
+            width: 100%;
+            background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/hsizegrip.png) center center no-repeat #535353;
+            cursor: row-resize;
+            display: block;
+        }
+
         .share-menu {
             padding: 10px;
             width: 200px;
@@ -87,13 +112,11 @@
             float: initial;
         }
 
-
-
         #textboxes {
             height: calc(40% - 50px);
             width: 100%;
-            resize: vertical;
-            overflow: auto;
+            /*resize: vertical;*/
+            /*overflow: auto;*/
             border: 4px solid #292929;
             background: #222;
             /*padding: 0 15px;*/
@@ -105,20 +128,20 @@
             width: calc(33.3333% - (10px / 3));
             height: 100%;
             display: inline-block;
-            border: 3px solid #555;
-            border-top: 0;
         }
 
         iframe {
             width: 100%;
             height: 60%;
+            overflow: scroll;
+            background: #fff;
         }
 
         .editor-left #textboxes {
             display: inline-block;
-            resize: horizontal;
+            /*resize: horizontal;*/
             width: 35%;
-            height: calc(100% - 50px);
+            height: 100%;
             padding-right: 0;
         }
 
@@ -126,59 +149,87 @@
             height: calc(33.3333% - (10px / 3));
             display: block;
             width: 100%;
+            border-bottom: 3px solid #555;
         }
 
         .editor-left iframe {
             display: inline-block;
             width: 64.5%;
-            height: calc(100% - 45px);
+            height: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        #qrcode {
+            width: 180px;
+            height: 0;
+            margin-top: 130px;
+            margin-bottom: 2px;
+        }
+        #qrcode img {
+            width: 180px;
         }
     </style>
 </head>
 
-<body onload="initialize()">
+<body>
 
 <div id="topbar">
     <!-- Seemingly random attributes necessary for TinyUrl to accept the request -->
 
     <div class="share-menu">
-        <form action="http://tinyurl.com/create.php" method="get" target="_blank">
-            <input type="hidden" id="source" name="source" value="indexpage">
-            <input type="hidden" name="url" id="url" />
-            <button onclick="setCodeUrl()">Short Link to Editor</button>
-            <button onclick="setViewUrl()">Short Link to Preview</button>
-        </form>
+        <!--<form action="http://tinyurl.com/create.php" method="get" target="_blank">-->
+            <!--<input type="hidden" id="source" name="source" value="indexpage">-->
+            <!--<input type="hidden" name="url" id="url" />-->
+            <!--<button onclick="setCodeUrl()">Short Link to Editor</button>-->
+            <!--<button onclick="setViewUrl()">Short Link to Preview</button>-->
+        <!--</form>-->
+        <a onclick="getEditorShortUrl()">Short Link to Editor</a>
+        <a onclick="getShareShortUrl()">Short Link to Preview</a>
         <a id="getLinkLink" href="" target="_blank">Long Link to Preview</a>
+        <div id="qrcode"></div>
     </div>
 
     <!--<button onclick="showCopyCodePrompt()">Copy Code</button>-->
     <!--<button><a id="downloadLink" href="" target="_blank" download="export.html">Download Code</a></button>-->
 
+    <a href="/me">My Pens</a>
+
     <a class="shareBtn" onclick="toggleShareMenu()">Links</a>
 
     <a onclick="toggleView()">Toggle View</a>
-    <a href="#">Fork</a>
-    <a href="#">Save</a>
-    <a href="#">Share</a>
-    <a href="#">Like</a>
+    <a onclick="del()">Delete</a>
+    <a onclick="fork()">Fork</a>
+    <a class="save hidden" onclick="save()">Save</a>
+    <a class="share" target="_blank">Share</a>
+    <!--<a href="#">Like</a>-->
 
-    <h3 contenteditable>Document Title</h3>
-    <h5>by <span contenteditable>Author Name</span></h5>
+    <a href="/editor">New</a>
+
+    <h3 contenteditable>New Pen</h3>
+    <h5>by <span contenteditable>Anonymous</span></h5>
 </div>
 
-<div id="textboxes" onkeyup="update()">
-    <div id="html">HTML</div>
-    <div id="css">/* CSS */</div>
-    <div id="javascript">// Javascript</div>
+<div class="main horizontal">
+    <div id="textboxes" onkeyup="debouncedUpdate()">
+        <div id="html">HTML</div>
+        <div id="css">/* CSS */</div>
+        <div id="javascript">// Javascript</div>
+    </div>
+
+    <div class="splitter horizontal"></div>
+
+    <iframe src="" frameborder="0"></iframe>
 </div>
 
-<iframe></iframe>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cloud9ide.github.io/emmet-core/emmet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/mode-html.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/theme-tomorrow_night.js"></script>
-<script src=""></script>
-<script src=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-emmet.js"></script>
+<script src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
+<script src="/qrcode.js"></script>
 <script src=""></script>
 <script src=""></script>
 
@@ -195,11 +246,39 @@
         }).join(''))
     }
 
+    function getSearchParam (key) {
+        var val = false;
+        if (location.search.indexOf(key) !== -1) val = location.search.split(key + '=')[1];
+        if (val && val.indexOf('&') !== -1) val = val.split('&')[0];
+        return val;
+    }
+
+    function getLocalStorage(key) {
+        var result = '';
+
+        try { result = localStorage.getItem(key) } catch (e) {
+            console.log(e);
+            return result;
+        }
+
+        return result;
+    }
+
+    function setLocalStorage(key, value) {
+        if (!key || !value) return;
+
+        try { localStorage.setItem(key, value) } catch (e) { console.log(e) }
+    }
+
+    function rstr () {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
     /* Return the HTML string for the page */
     function getHTML(data) {
         if (!window.data) window.data = {};
         // Generate an HTML page from the contents of each <textarea>
-        var pageData = `<!DOCTYPE html><head><style>${ data["css"] }</style><script>${ data["js"] }</scr${ '' }ipt></head><body>${ data["html"] }</bo${ '' }dy>`;
+        var pageData = `<!DOCTYPE html><head><title>${ data.title || 'New Pen' }</title><meta name="author" content="${ data.author || '' }"><style>${ data.css }</style></head><body>${ data.html }<script>${ data.js }</scr${ '' }ipt></bo${ '' }dy>`;
 
         return pageData;
     }
@@ -220,6 +299,43 @@
             }
         };
         xhr.send();
+    }
+
+
+    function copyToClipboard (str) {
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
+    function getEditorShortUrl () {
+        var d = location.pathname + location.hash;
+
+        $.post('https://md5blobs.mr365.co/', { data: d }, function (res) {
+            if (res && res.key) {
+                var url = 'http://jspen.b-cdn.net/s/#' + res.key;
+                copyToClipboard(url);
+                console.log(url);
+            }
+        });
+    }
+
+    function getShareShortUrl () {
+        var d = `/#${ b64EncodeUnicode(encodeURIComponent(getHTML(data))) }`;
+        
+        $.post('https://md5blobs.mr365.co/', { data: d }, function (res) {
+            if (res && res.key) {
+                var url = 'http://jspen.b-cdn.net/s/#' + res.key;
+                copyToClipboard(url);
+                console.log(url);
+            }
+        });
     }
 
     /* Set the TinyUrl form hidden 'url' field to the view URL */
@@ -249,26 +365,80 @@
         var isEditorLeft = document.body.className.includes('editor-left');
         if (isEditorLeft) document.body.classList.remove('editor-left');
         else document.body.classList.add('editor-left');
+
+        setLocalStorage('_isEditorLeft', !isEditorLeft + '');
+
+        if (isEditorLeft) {
+            $('.main.horizontal  #textboxes').resizable('destroy');
+            $('.splitter.horizontal, .main.horizontal').removeClass('horizontal');
+            $('.main  #textboxes').resizable({ handleSelector: ".splitter", resizeHeight: false, onDragEnd: function () { setTimeout(resizeIframe, 200) } });
+
+        } else {
+            $('.main  #textboxes').resizable('destroy');
+            $('.splitter, .main').addClass('horizontal');
+            $('.main.horizontal  #textboxes').resizable({ handleSelector: ".splitter.horizontal", resizeWidth: false, onDragEnd: function () { setTimeout(resizeIframe, 200) } });
+        }
+
+        resizeIframe();
     }
 
+    function save () {
+        if (!window.saved) return;
+        if (!window.data.id) return alert('Error saving');
+        window.saved[window.data.id] = window.data;
+
+        setLocalStorage('_saved', JSON.stringify(window.saved));
+    }
+
+    function del () {
+        if (!window.data.id) return;
+        if (window.saved[window.data.id]) delete window.saved[window.data.id];
+        setLocalStorage('_saved', JSON.stringify(window.saved));
+        setTimeout(function () { location.href = '/me' }, 500);
+    }
+
+    function fork () {
+        window.data.id = rstr();
+        window.data.title = 'Fork of ' + window.data.title;
+        window.data.author = getLocalStorage('_author') || 'Anonymous';
+        $('#topbar h5 span').text(window.data.author);
+        $('#topbar h3').text(window.data.title);
+        update();
+    }
+
+    function resizeIframe () {
+        var isEditorLeft = document.body.className.includes('editor-left');
+
+        if (isEditorLeft) {
+            var w = $('#textboxes').width();
+            $('iframe').css('width', $(window).width() - 18 - 18 - w);
+            $('iframe, #textboxes').css('height', '');
+
+        } else {
+            var h = $('#textboxes').height();
+            $('iframe').css('height', $(window).height() - 50 - 18 - h);
+            $('iframe, #textboxes').css('width', '');
+        }
+
+        if (isEditorLeft) {
+            $('.main.horizontal  #textboxes').resizable('destroy');
+            $('.splitter.horizontal, .main.horizontal').removeClass('horizontal');
+            $('.main  #textboxes').resizable({ handleSelector: ".splitter", resizeHeight: false, onDragEnd: function () { setTimeout(resizeIframe, 20) } });
+
+        } else {
+            $('.main  #textboxes').resizable('destroy');
+            $('.splitter, .main').addClass('horizontal');
+            $('.main.horizontal  #textboxes').resizable({ handleSelector: ".splitter.horizontal", resizeWidth: false, onDragEnd: function () { setTimeout(resizeIframe, 20) } });
+        }
+
+        $('html,body').scrollTop(0);
+        // initialize();
+    }
 
     /* Set the TinyUrl form hidden 'url' field to the code URL */
     function setCodeUrl() {
         document.getElementById("url").value = window.location.href;
     }
-
-    /* Show a prompt with the HTML page data so the user can copy the code */
-//    function showCopyCodePrompt() {
-//        var data = {
-//            "css" : document.getElementById("css").value,
-//            "js" : document.getElementById("javascript").value,
-//            "html" : document.getElementById("html").value
-//        };
-//
-//        var html = getHTML(data);
-//
-//        window.prompt("Copy to clipboard: ", html)
-//    }
 
     /* Run once when the page is loaded */
     function initialize() {
@@ -285,32 +455,54 @@
         htmlEditor.setTheme("ace/theme/tomorrow_night");
         htmlEditor.session.setMode("ace/mode/html");
         htmlEditor.session.setUseWrapMode(true);
+        htmlEditor.setOption("enableEmmet", true);
+        htmlEditor.setFontSize("14px");
+        htmlEditor.setAutoScrollEditorIntoView(true);
         if (data["html"]) htmlEditor.session.setValue(data["html"]);
 
         window.cssEditor = ace.edit("css");
         cssEditor.setTheme("ace/theme/tomorrow_night");
         cssEditor.session.setMode("ace/mode/css");
         cssEditor.session.setUseWrapMode(true);
+        cssEditor.setOption("enableEmmet", true);
+        cssEditor.setFontSize("14px");
+        cssEditor.setAutoScrollEditorIntoView(true);
         if (data["css"]) cssEditor.session.setValue(data["css"]);
 
         window.jsEditor = ace.edit("javascript");
         jsEditor.setTheme("ace/theme/tomorrow_night");
         jsEditor.session.setMode("ace/mode/javascript");
         jsEditor.session.setUseWrapMode(true);
+        jsEditor.setFontSize("14px");
+        jsEditor.setAutoScrollEditorIntoView(true);
         if (data["js"]) jsEditor.session.setValue(data["js"]);
+
+        if (window.data.author) $('#topbar h5 span').text(window.data.author);
+        if (window.data.title) $('#topbar h3').text(window.data.title);
 
         update();
     }
 
+    function debouncedUpdate () {
+        window.dirty = true;
+        $('.save').removeClass('hidden');
+        clearTimeout(window.updateTimer);
+        window.updateTimer = setTimeout(update, 1600);
+    }
+
+    function updateShareLink () {
+        var shareText = '';
+        if (window.data.title) shareText += window.data.title;
+        if (window.data.author) shareText += ' by ' + window.data.author;
+        shareText += ' - [Paste Short Link to Preview Here]';
+
+        $('.share').attr('href', `https://twitter.com/intent/tweet?text=${ encodeURIComponent(shareText) }&hashtags=jspen`);
+    }
 
     /* Run each time a key is pressed on a text box */
     function update() {
-//        var data = {
-//            "css" : document.getElementById("css").value,
-//            "js" : document.getElementById("javascript").value,
-//            "html" : document.getElementById("html").value
-//        };
-
+        window.dirty = false;
+        $('.save').addClass('hidden');
         if (!window.data) window.data = {};
         if (!window.data.html) window.data.html = '';
         if (!window.data.css) window.data.css = '';
@@ -322,19 +514,83 @@
 
         var html = encodeURIComponent(getHTML(data));
 
+        if (window.data.title) document.title = window.data.title;
+        if (!window.data.id) window.data.id = rstr();
+
         // Save encoded page data to the URL
-        window.location.hash = "#" + b64EncodeUnicode(JSON.stringify(data));
+        // window.location.hash = "#" + b64EncodeUnicode(JSON.stringify(data));
+        history.replaceState({}, "", location.pathname + "#" + b64EncodeUnicode(JSON.stringify(data)));
 
         // Update the URL for the "Get Link" button
         document.getElementById("getLinkLink").href = getViewLink(html);
 
         // Update the download link
-        // document.getElementById("downloadLink").href = `data:text/html,${html}`
+        // document.getElementById("downloadLink").href = `data:text/html,${ html }`
+
+        // Update QR code
+        if (qrcode) try { qrcode.makeCode(encodeURIComponent(getViewLink(html)), { width: 180, height: 180, correctLevel : QRCode.CorrectLevel.H }); $('#qrcode').css('height', '180px') } catch(e){}
+
+        // Update share link
+        updateShareLink();
 
         // Update the <iframe> to display the generated page
         // Todo: Update with a > 8-bit safe solution for updates
-        window.frames[0].location.replace(`data:text/html,${html}`);
+        //window.frames[0].location.replace(`data:text/html,${ html }`);
+        $('iframe').attr('src', '');
+        setTimeout(function () { $('iframe').attr('src', getViewLink(html)) }, 250);
+        //$('iframe').replaceWith(`<iframe src="${ getViewLink(html) }" frameborder="0"></iframe>`);
+        save();
     }
+
+    window.onbeforeunload = function (e) {
+        if (!window.dirty) return;
+        e.preventDefault();
+
+        update();
+
+        // Chrome requires returnValue to be set
+        e.returnValue = '';
+    };
+
+    var qrcode = new QRCode("qrcode");
+
+    $(document).ready(function () {
+        $(window).resize(resizeIframe);
+        $('.main.horizontal #textboxes').resizable({ handleSelector: ".splitter.horizontal", resizeWidth: false, onDragEnd: function () { setTimeout(resizeIframe, 200) } });
+        resizeIframe();
+        initialize();
+
+        $('#topbar h3').on('input blur', function () {
+            if (!window.data) window.data = {};
+            window.data.title = $(this).text() || 'New Pen';
+            update();
+        });
+
+        $('#topbar h5 span').on('input blur', function () {
+            if (!window.data) window.data = {};
+            window.data.author = $(this).text() || getLocalStorage('_author') || 'Anonymous';
+            if (window.data.author) setLocalStorage('_author', window.data.author);
+            update();
+        });
+
+        var isEditorLeft = getLocalStorage('_isEditorLeft');
+        if (Boolean(isEditorLeft) && isEditorLeft != 'false') toggleView();
+
+        try { window.saved = JSON.parse(getLocalStorage('_saved')) } catch(e){}
+        try { if (!window.data.author) window.data.author = getLocalStorage('_author') || 'Anonymous' } catch(e){}
+        if (window.data.author) $('#topbar h5 span').text(window.data.author);
+        updateShareLink();
+
+        $(document).keydown(function(event) {
+            if ((event.ctrlKey || event.metaKey) && event.which == 83) {
+                event.preventDefault();
+
+                update();
+
+                return false;
+            }
+        });
+    });
 
 </script>
 </body>
