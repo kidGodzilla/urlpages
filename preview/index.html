@@ -43,7 +43,7 @@
             color: #eee;
             margin: 0;
             margin-left: 15px;
-            width: 25%;
+            /*width: 25%;*/
         }
         #topbar h3 {
             margin-top: 1px;
@@ -154,7 +154,7 @@
 <body>
 
 <div id="topbar">
-    <a href="#" style="background: lightseagreen;border-color: lightseagreen">Show Full Page</a>
+    <a class="preview" style="background: lightseagreen;border-color: lightseagreen">Show Full Page</a>
 
     <!--<a href="/me">My Pens</a>-->
     <!--<a href="/editor">New Pen</a>-->
@@ -264,6 +264,7 @@
 
         var editorUrl = '/editor#' + b64EncodeUnicode(JSON.stringify(data));
         $('.edit, .fork').attr('href', editorUrl);
+        $('.preview').attr('href', '/#' + hash);
     });
 </script>
 
