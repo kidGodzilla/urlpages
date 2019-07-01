@@ -321,6 +321,7 @@
             if (res && res.key) {
                 var url = 'http://jspen.b-cdn.net/s/#' + res.key;
                 copyToClipboard(url);
+                alert(url + ' copied to clipboard.');
                 console.log(url);
             }
         });
@@ -328,11 +329,12 @@
 
     function getShareShortUrl () {
         var d = `/#${ b64EncodeUnicode(encodeURIComponent(getHTML(data))) }`;
-        
+
         $.post('https://md5blobs.mr365.co/', { data: d }, function (res) {
             if (res && res.key) {
                 var url = 'http://jspen.b-cdn.net/s/#' + res.key;
                 copyToClipboard(url);
+                alert(url + ' copied to clipboard.');
                 console.log(url);
             }
         });
