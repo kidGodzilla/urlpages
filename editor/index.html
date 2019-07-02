@@ -191,20 +191,16 @@
         #qrcode img {
             border: 5px solid #fff;
         }
-
         .namespace {
             display: inline-block;
             width: calc(100% - 800px);
         }
+        .code { display: none !important; }
 
         @media screen and (max-width: 720px) {
-            body, .main {
-                overflow-y: scroll;
-            }
-            .toggle-view, .new, .delete, .fork, .me, .splitter { display: none !important; }
-            #topbar .namespace {
-                display: none;
-            }
+            body, .main { overflow-y: scroll; }
+            #topbar .namespace, .toggle-view, .new, .delete, .fork, .me, .splitter { display: none !important; }
+            .code { display: inline-block !important; }
             #textboxes {
                 width: 100% !important;
                 height: calc(100% - 45px) !important;
@@ -277,7 +273,7 @@
 
     <div class="splitter horizontal"></div>
 
-    <iframe src="" frameborder="0"></iframe>
+    <iframe src="" frameborder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
