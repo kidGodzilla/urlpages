@@ -3,7 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
-    <title>My Pens</title>
+    <title>JSPen: My Pens</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#292929">
+    <meta name="msapplication-TileColor" content="#292929">
+    <meta name="theme-color" content="#292929">
+
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
 
@@ -128,6 +136,11 @@
             margin-top: 30px;
             text-align: center;
         }
+        .pens p {
+            text-align: center;
+            width: 100%;
+            color: #eee;
+        }
 
         small {
             color: #eee;
@@ -184,7 +197,9 @@
 
 <small>Your pens are stored locally on your device, not the web. <a href="/about" target="_blank">Read More</a>.</small>
 
-<div class="pens"></div>
+<div class="pens">
+    <p>You haven't saved any pens yet. Create and save a pen to this device, and it will appear here.</p>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src=""></script>

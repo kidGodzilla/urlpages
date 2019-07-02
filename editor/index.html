@@ -4,6 +4,14 @@
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
     <title>JSPen Editor: New Pen</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#292929">
+    <meta name="msapplication-TileColor" content="#292929">
+    <meta name="theme-color" content="#292929">
+
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
 
@@ -164,12 +172,24 @@
         }
         #qrcode {
             width: 180px;
-            height: 0;
+            height: 190px;
             margin-top: 130px;
             margin-bottom: 2px;
+            text-align: center;
+            /*height: 203px;*/
+            position: relative;
+            top: 10px;
         }
         #qrcode img {
             width: 180px;
+            height: 180px;
+        }
+        #qrcode small {
+            color: #eee;
+            cursor: pointer;
+        }
+        #qrcode img {
+            border: 5px solid #fff;
         }
 
         .namespace {
@@ -214,7 +234,9 @@
         <a onclick="getEditorShortUrl()">Short Link to Editor</a>
         <a onclick="getShareShortUrl()">Short Link to Preview</a>
         <a id="getLinkLink" href="" target="_blank">Long Link to Preview</a>
-        <div id="qrcode"></div>
+        <div id="qrcode">
+            <small onclick="updateQRCode()">Generate QR Code</small>
+        </div>
     </div>
 
     <!--<button onclick="showCopyCodePrompt()">Copy Code</button>-->
@@ -375,12 +397,32 @@
         });
     }
 
+    function updateQRCode () {
+        if (!qrcode) return;
+
+        var url = `${ location.protocol }//${ location.host }/#${ b64EncodeUnicode(encodeURIComponent(getHTML(data))) }`;
+
+        function make (url) {
+            try {
+                qrcode.makeCode(url, { width: 170, height: 170 });
+                $('#qrcode small').hide();
+            } catch(e){}
+        }
+
+        if (url.length < 1000) {
+            make(url);
+        } else {
+            makeShortUrl(function (url) {
+                make(url);
+            })
+        }
+    }
+
     function getShareShortUrl () {
         makeShortUrl(function (url) {
             copyToClipboard(url);
             toggleShareMenu();
             alert(url + ' copied to clipboard.');
-            console.log(url);
         });
     }
 
@@ -583,9 +625,6 @@
 
         // Update the download link
         // document.getElementById("downloadLink").href = `data:text/html,${ html }`
-
-        // Update QR code
-        if (qrcode) try { qrcode.makeCode(encodeURIComponent(getViewLink(html)), { width: 180, height: 180, correctLevel : QRCode.CorrectLevel.H }); $('#qrcode').css('height', '180px') } catch(e){}
 
         // Update share link
         // updateShareLink();

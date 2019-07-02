@@ -3,7 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
-    <title>Preview</title>
+    <title>JSPen: Preview</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#292929">
+    <meta name="msapplication-TileColor" content="#292929">
+    <meta name="theme-color" content="#292929">
+
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
 
@@ -26,13 +34,6 @@
 
         textarea, iframe {
             border: 1px solid;
-        }
-
-        .pen {
-            display: none;
-        }
-        .pens .pen {
-            display: inline-block;
         }
 
         #topbar {
@@ -70,61 +71,49 @@
         #topbar button:hover, #topbar a:hover {
             background: #333;
         }
-        .pens a {
-            color: #e9e9e9;
-            /*text-decoration: none;*/
-        }
-        .pens a:hover {
-            color: #fff;
+
+        .share-menu {
+            padding: 10px;
+            width: 200px;
+            background: #181818;
+            z-index: 99999999999;
+            border-radius: 3px;
+            position: fixed;
+            right: 5px;
+            top: 48px;
+            display: none;
         }
 
-
-        .pens {
-            margin-left: 2px;
-            margin-top: 20px;
+        .share-menu.open {
+            display: block;
         }
 
-        .pen {
-            min-width: 280px;
-            width: calc(33% - 5px);
-            padding: 15px;
-            background: #191919;
-            margin: 3px;
-            color: #eee;
-            position: relative;
-            transition: all 250ms ease;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .pen:after {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            content: '';
-            cursor: pointer;
-        }
-        .pen:hover {
-            background: #292929;
-            color: #fff;
-        }
-        .pen iframe {
-            border: initial;
-            transform-origin: 0 0;
-            transform: scale(0.25);
-            height: 1024px;
-            margin-bottom: -768px;
-            width: 400%;
-        }
-        .pen h3 {
-            margin-top: 10px;
-        }
-
-        .pens .nav {
+        .share-menu button, .share-menu a {
             width: 100%;
-            margin-top: 30px;
+            display: block;
+            float: initial;
+        }
+
+        #qrcode {
+            width: 180px;
+            height: 180px;
+            margin-top: 130px;
+            margin-bottom: 2px;
             text-align: center;
+            height: 203px;
+            position: relative;
+            top: 10px;
+        }
+        #qrcode img {
+            width: 180px;
+            height: 180px;
+        }
+        #qrcode small {
+            color: #eee;
+            cursor: pointer;
+        }
+        #qrcode img {
+            border: 5px solid #fff;
         }
 
         .about {
@@ -141,6 +130,11 @@
         }
         li {
             margin-bottom: 10px;
+        }
+
+        .namespace {
+            display: inline-block;
+            width: calc(100% - 800px);
         }
 
         iframe {
@@ -165,6 +159,17 @@
 <div id="topbar">
     <a class="preview" style="background: lightseagreen;border-color: lightseagreen">Show Full Page</a>
 
+    <div class="share-menu">
+        <a onclick="getEditorShortUrl()">Short Link to Preview</a>
+        <a onclick="getShareShortUrl()">Short Link to Full Page</a>
+        <a id="getLinkLink" href="" target="_blank">Long Link to Full Page</a>
+        <div id="qrcode">
+            <small onclick="updateQRCode()">Generate QR Code</small>
+        </div>
+    </div>
+
+    <a class="shareBtn" onclick="toggleShareMenu()">Links</a>
+
     <!--<a href="/me">My Pens</a>-->
     <!--<a href="/editor">New Pen</a>-->
 
@@ -176,7 +181,7 @@
         <svg enable-background="new 0 0 48 48" height="36px" version="1.1" viewBox="0 0 48 48" width="36px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Expanded"><g><g><path fill="white" d="M1,47.027v-1.003c0-0.304,0.043-7.483,3.791-11.195c1.129-1.118,2.623-1.734,4.207-1.734s3.074,0.617,4.194,1.737     c1.125,1.125,1.743,2.62,1.742,4.211c-0.001,1.586-0.621,3.076-1.743,4.194c-3.733,3.719-10.885,3.786-11.188,3.787L1,47.027z      M8.998,35.095c-1.054,0-2.048,0.41-2.8,1.155c-2.388,2.365-2.993,6.718-3.146,8.719c1.998-0.159,6.344-0.774,8.728-3.148     c0.743-0.74,1.153-1.727,1.154-2.779c0.001-1.056-0.41-2.048-1.156-2.795C11.036,35.504,10.048,35.095,8.998,35.095z"/></g><g><path fill="white" d="M2,47.023c-0.256,0-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414L6.95,39.66     c0.391-0.391,1.023-0.391,1.414,0s0.391,1.023,0,1.414L2.707,46.73C2.512,46.926,2.256,47.023,2,47.023z"/></g><g><path fill="white" d="M15.911,38.77L15.911,38.77c-0.265,0-0.52-0.105-0.707-0.293l-5.655-5.658c-0.391-0.391-0.391-1.023,0-1.414L40.66,0.293     C40.848,0.105,41.102,0,41.367,0l0,0c0.265,0,0.52,0.105,0.707,0.293L47.73,5.95c0.391,0.391,0.391,1.023,0,1.414L16.618,38.477     C16.43,38.664,16.176,38.77,15.911,38.77z M11.669,32.112l4.241,4.243L45.609,6.657l-4.242-4.243L11.669,32.112z"/></g><g><path fill="white" d="M22.982,14.728c-0.256,0-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414L33.588,1.707     c1.949-1.95,5.123-1.95,7.072,0c0.391,0.391,0.391,1.023,0,1.414s-1.023,0.391-1.414,0c-1.171-1.171-3.075-1.17-4.244,0     L23.689,14.435C23.494,14.63,23.238,14.728,22.982,14.728z"/></g><g><path fill="white" d="M35.71,18.971c-0.256,0-0.512-0.098-0.707-0.293l-5.656-5.657c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0     l5.656,5.657c0.391,0.391,0.391,1.023,0,1.414C36.222,18.873,35.966,18.971,35.71,18.971z"/></g></g></g></svg>
     </a>
 
-    <div style="display:inline-block;width:60%;">
+    <div class="namespace">
         <h3>About</h3>
         <h5><span>A little bit about JSPen</span></h5>
     </div>
@@ -185,6 +190,7 @@
 <iframe frameborder="0"></iframe>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/qrcode.js"></script>
 
 <script>
     function b64DecodeUnicode(str) {
@@ -197,6 +203,13 @@
         return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
             return String.fromCharCode(parseInt(p1, 16))
         }))
+    }
+
+    function toggleShareMenu () {
+        var isOpen = document.querySelector('.shareBtn').className.includes('open');
+
+        if (isOpen) document.querySelectorAll('.shareBtn, .share-menu').forEach(itm => itm.classList.remove('open'));
+        else document.querySelectorAll('.shareBtn, .share-menu').forEach(itm => itm.classList.add('open'));
     }
 
     function getHTML(data) {
@@ -218,6 +231,14 @@
         });
     }
 
+    function getShareShortUrl () {
+        makeShortUrl(function (url) {
+            copyToClipboard(url);
+            toggleShareMenu();
+            alert(url + ' copied to clipboard.');
+        });
+    }
+
     function updateShareLink () {
         var shareText = '';
         if (window.data.title) shareText += window.data.title;
@@ -226,11 +247,68 @@
         makeShortUrl(function (url) {
             shareText += ' - ' + url;
             $('.share').attr('href', `https://twitter.com/intent/tweet?text=${ encodeURIComponent(shareText) }&hashtags=jspen`);
-            setTimeout(function () { $('.share').click() }, 100);
         });
     }
 
+    function copyToClipboard (str) {
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
+    function getEditorShortUrl () {
+        var d = location.pathname + location.hash;
+
+        $.post('https://put.jspen.co/', { data: d }, function (res) {
+            if (res && res.key) {
+                var url = 'http://jspen.co/s/#' + res.key;
+                copyToClipboard(url);
+                toggleShareMenu();
+                alert(url + ' copied to clipboard.');
+            }
+        });
+    }
+
+    function makeShortUrl (cb) {
+        var d = `/#${ b64EncodeUnicode(encodeURIComponent(getHTML(data))) }`;
+
+        $.post('https://put.jspen.co/', { data: d }, function (res) {
+            if (res && res.key) {
+                var url = 'http://jspen.co/s/#' + res.key;
+                cb(url);
+            }
+        });
+    }
+
+    function updateQRCode () {
+        if (!qrcode) return;
+
+        var url = `${ location.protocol }//${ location.host }/#${ b64EncodeUnicode(encodeURIComponent(getHTML(data))) }`;
+
+        function make (url) {
+            try {
+                qrcode.makeCode(url, { width: 170, height: 170 });
+                $('#qrcode small').hide();
+            } catch(e){}
+        }
+
+        if (url.length < 1000) {
+            make(url);
+        } else {
+            makeShortUrl(function (url) {
+                make(url);
+            })
+        }
+    }
+
     var hash = location.hash.slice(1);
+    var qrcode = new QRCode("qrcode");
 
     var pageData = decodeURIComponent(b64DecodeUnicode(hash));
      console.log(pageData);
@@ -273,7 +351,7 @@
 
         var editorUrl = '/editor#' + b64EncodeUnicode(JSON.stringify(data));
         $('.edit, .fork').attr('href', editorUrl);
-        $('.preview').attr('href', '/#' + hash);
+        $('.preview, #getLinkLink').attr('href', '/#' + hash);
     });
 </script>
 
