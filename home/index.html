@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
     <title>Home</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
@@ -277,6 +278,8 @@
             lang: 'en',
             customCallback: function (data) {
 
+                data = data.reverse();
+
                 window.tweets = data;
                 // console.log(data);
 
@@ -287,7 +290,7 @@
                     var key = url.split('#')[1];
                     // console.log(url, key);
 
-                    $.get('https://md5s.b-cdn.net/' + key + '.t', function (uri) {
+                    $.get('https://md5s.jspen.co/' + key + '.t', function (uri) {
                         var data = uri.split('#')[1];
                         var pageData = decodeURIComponent(b64DecodeUnicode(data));
                         //console.log(uri, data);

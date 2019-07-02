@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
     <title>JSPen Editor: New Pen</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
@@ -284,7 +286,7 @@
     function getHTML(data) {
         if (!window.data) window.data = {};
         // Generate an HTML page from the contents of each <textarea>
-        var pageData = `<!DOCTYPE html><head><title>${ data.title || 'New Pen' }</title><meta name="author" content="${ data.author || '' }"><style>${ data.css }</style></head><body>${ data.html }<script>${ data.js }</scr${ '' }ipt></bo${ '' }dy>`;
+        var pageData = `<!DOCTYPE html><head><meta charset="utf-8"><meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport"><title>${ data.title || 'New Pen' }</title><meta name="author" content="${ data.author || '' }"><style>${ data.css }</style></head><body>${ data.html }<script>${ data.js }</scr${ '' }ipt></bo${ '' }dy>`;
 
         return pageData;
     }
