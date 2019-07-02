@@ -83,7 +83,7 @@
 
         .pens {
             margin-left: 2px;
-            margin-top: 48px;
+            /*margin-top: 10px;*/
         }
 
         .pen {
@@ -129,6 +129,16 @@
             text-align: center;
         }
 
+        small {
+            color: #eee;
+            padding: 5px;
+            display: block;
+            text-align: center;
+        }
+        small a {
+            color: #eee;
+        }
+
     </style>
 </head>
 
@@ -153,6 +163,8 @@
     <iframe src="{{src}}" frameborder="0"></iframe>
     <h3>{{title}}</h3>
 </a>
+
+<small>Your pens are stored locally on your device, not the web. <a href="/about" target="_blank">Read More</a>.</small>
 
 <div class="pens"></div>
 
