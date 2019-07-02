@@ -1,20 +1,37 @@
-<noscript>JavaScript is required to convert the URL into a usable web page.</noscript>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSPen – Free, Permanent Web Pages</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#292929">
+  <meta name="msapplication-TileColor" content="#292929">
+  <meta name="theme-color" content="#292929">
+
+  <noscript>JavaScript is required to convert the URL into a usable web page.</noscript>
+</head>
+<body>
 
 <script type="text/javascript">
-/* Decoding base64 ⇢ UTF8: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings */
-function b64DecodeUnicode(str) {
-  return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-  }).join(''))
-}
+  /* Decoding base64 ⇢ UTF8: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings */
+  function b64DecodeUnicode(str) {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    }).join(''))
+  }
 
-if (window.location.hash) {
-  // Try to get page data from the URL if possible
-  var hash = location.hash.slice(1);
-  var data = b64DecodeUnicode(hash);
-  document.write(decodeURIComponent(data));
-} else {
-  // Otherwise redirect to the editor
-  window.location.replace("./home");
-}
+  if (window.location.hash) {
+    // Try to get page data from the URL if possible
+    var hash = location.hash.slice(1);
+    var data = b64DecodeUnicode(hash);
+    document.write(decodeURIComponent(data));
+  } else {
+    // Otherwise redirect to the editor
+    window.location.replace("./home");
+  }
 </script>
+</body>
+</html>
