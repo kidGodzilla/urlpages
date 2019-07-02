@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSPen.co Editor: New Pen</title>
+    <title>JSPen Editor: New Pen</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');
 
@@ -325,7 +325,7 @@
 
         $.post('https://md5blobs.mr365.co/', { data: d }, function (res) {
             if (res && res.key) {
-                var url = 'http://jspen.b-cdn.net/s/#' + res.key;
+                var url = 'http://jspen.co/s/#' + res.key;
                 copyToClipboard(url);
                 toggleShareMenu();
                 alert(url + ' copied to clipboard.');
@@ -339,7 +339,7 @@
 
         $.post('https://md5blobs.mr365.co/', { data: d }, function (res) {
             if (res && res.key) {
-                var url = 'http://jspen.b-cdn.net/s/#' + res.key;
+                var url = 'http://jspen.co/s/#' + res.key;
                 cb(url);
             }
         });

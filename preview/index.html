@@ -203,7 +203,7 @@
 
         $.post('https://md5blobs.mr365.co/', { data: d }, function (res) {
             if (res && res.key) {
-                var url = 'http://jspen.b-cdn.net/s/#' + res.key;
+                var url = 'http://jspen.co/s/#' + res.key;
                 cb(url);
             }
         });
