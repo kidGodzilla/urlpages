@@ -144,6 +144,14 @@
             width: 60%;
         }
 
+        .product-hunt {
+            background: transparent !important;
+            margin-top: -1px;
+            padding: 0 !important;
+            border: initial !important;
+            opacity: 0;
+        }
+
         @media screen and (max-width: 720px) {
             .pen {
                 width: calc(100% - 12px);
@@ -155,7 +163,12 @@
             #topbar div {
                 display: none;
             }
+            .product-hunt {
+                margin-top: 10px;
+                margin-right: calc(50% - 100px);
+            }
         }
+
     </style>
 </head>
 
@@ -166,6 +179,10 @@
     <a href="/me">My Pens</a>
     <a href="/editor">New Pen</a>
     <a href="/about">About</a>
+
+    <a class="product-hunt" href="https://www.producthunt.com/posts/jspen-permanent-page-maker-codepen-like?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-jspen-permanent-page-maker-codepen-like" target="_blank">
+        <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=160176&theme=dark" alt="JSPen Permanent Page Maker, Codepen-like - Coding tool to share links to server-free pages! | Product Hunt Embed" style="width: 200px; height: 42px;" width="200px" height="42px" />
+    </a>
 
     <a style="float:initial;background:initial;border:initial;padding:initial;padding-left:10px;padding-top: 2px;" href="/">
         <img src="/logo.svg" alt="logo"/>
@@ -289,6 +306,9 @@
         window.page = 0;
 
         window.saved = [];
+
+        if (+ new Date() < 1562150439182) $('.product-hunt').remove();
+        else $('.product-hunt').css('opacity', '1').show();
 
         twitterFetcher.fetch({
             profile: { screenName: 'htmlpins' },
