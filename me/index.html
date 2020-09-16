@@ -87,7 +87,7 @@
             overflow: scroll;
             background: #fff;
         }
-        
+
         .pens {
             margin: 0 auto;
             max-width: 1600px;
@@ -286,9 +286,7 @@
         var max = (page + 1) * perPage;
         var min = page * perPage;
 
-        for (var k in saved) {
-            var item = saved[k];
-
+        window.savedArray.forEach((item, i) => {
             if (!item.title || item.title == 'undefined') item.title = 'Untitled Pen';
 
             var html = encodeURIComponent(getHTML(item));
@@ -298,9 +296,7 @@
 
             if (i >= min && i < max)
                 $('.pens').append(template.replace('{{url}}', url).replace('{{src}}', src).replace('{{title}}', item.title));
-
-            i++;
-        }
+        });
 
         $('.pens').append('<div class="nav"></div>');
 
@@ -309,10 +305,18 @@
     }
 
     $(document).ready(function () {
+        window.savedArray = [];
         $('.pen').remove();
+        window.saved = [];
         window.page = 0;
 
         try { window.saved = JSON.parse(getLocalStorage('_saved')) } catch(e){}
+
+        for (var k in window.saved) {
+            window.savedArray.push(window.saved[k]);
+        }
+
+        window.savedArray = window.savedArray.reverse();
 
         renderPage(page);
     });
