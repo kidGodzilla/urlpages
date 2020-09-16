@@ -395,7 +395,7 @@
     }
 
     function makeImageUrl (cb) {
-        $.post('https://img.jspen.co/img', { html: data.html, css: data.css, js: data.js }, function (res) {
+        $.post('https://img.jspen.co/img', { html: data.html, css: data.css, js: data.js, width: data.width || $('iframe').width(), height: data.height || $('iframe').height() }, function (res) {
             if (res) cb(res.image);
         });
     }
@@ -516,14 +516,21 @@
 
         if (isEditorLeft) {
             var w = $('#textboxes').width();
-            $('iframe').css('width', $(window).width() - 18 - 18 - w);
+            $('iframe').css('width', window.data && data.width + 'px' || ($(window).width() - 18 - 18 - w));
             $('iframe, #textboxes').css('height', '');
 
         } else {
             var h = $('#textboxes').height();
-            $('iframe').css('height', $(window).height() - 50 - 18 - h);
+            $('iframe').css('height', window.data && data.height + 'px' || ($(window).height() - 50 - 18 - h));
             $('iframe, #textboxes').css('width', '');
         }
+
+        $('iframe').css('resize', 'both').css('overflow', 'auto').css('height', (window.data && data.height || $('iframe').height()) + 'px');
+
+        $('iframe').on('mouseup click', e => {
+            var w = data.width = $('iframe').width(), h = data.height = $('iframe').height();
+            update();
+        });
 
         if (isEditorLeft) {
             $('.main.horizontal  #textboxes').resizable('destroy');
