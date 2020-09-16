@@ -173,7 +173,7 @@
         #qrcode {
             width: 180px;
             height: 190px;
-            margin-top: 130px;
+            margin-top: 160px;
             margin-bottom: 2px;
             text-align: center;
             /*height: 203px;*/
@@ -230,6 +230,7 @@
         <a onclick="getEditorShortUrl()">Short Link to Editor</a>
         <a onclick="getShareShortUrl()">Short Link to Preview</a>
         <a id="getLinkLink" href="" target="_blank">Long Link to Preview</a>
+        <a onclick="getDynamicImageUrl()">Dynamic Image URL</a>
         <div id="qrcode">
             <small onclick="updateQRCode()">Generate QR Code</small>
         </div>
@@ -393,6 +394,12 @@
         });
     }
 
+    function makeImageUrl (cb) {
+        $.post('https://img.jspen.co/img', { html: data.html, css: data.css, js: data.js }, function (res) {
+            if (res) cb(res.image);
+        });
+    }
+
     function updateQRCode () {
         if (!qrcode) return;
 
@@ -416,6 +423,14 @@
 
     function getShareShortUrl () {
         makeShortUrl(function (url) {
+            copyToClipboard(url);
+            toggleShareMenu();
+            alert(url + ' copied to clipboard.');
+        });
+    }
+
+    function getDynamicImageUrl () {
+        makeImageUrl(function (url) {
             copyToClipboard(url);
             toggleShareMenu();
             alert(url + ' copied to clipboard.');
