@@ -145,6 +145,7 @@
             height: 60%;
             overflow: scroll;
             background: #fff;
+            position: absolute;
         }
 
         .editor-left #textboxes {
@@ -528,12 +529,12 @@
 
         if (isEditorLeft) {
             var w = $('#textboxes').width();
-            $('iframe').css('width', window.data && data.width + 'px' || ($(window).width() - 18 - 18 - w));
+            $('iframe').css('width', (window.data && data.width || ($(window).width() - 18 - 18 - w)) + 'px');
             $('iframe, #textboxes').css('height', '');
 
         } else {
             var h = $('#textboxes').height();
-            $('iframe').css('height', window.data && data.height + 'px' || ($(window).height() - 50 - 18 - h));
+            $('iframe').css('height', (window.data && data.height || ($(window).height() - 50 - 18 - h)) + 'px');
             $('iframe, #textboxes').css('width', '');
         }
 
@@ -542,11 +543,15 @@
         $('iframe').on('mousemove', e => {
             var w = data.width = $('iframe').width(), h = data.height = $('iframe').height();
             $('.size-out').text(`${ w }x${ h }`).css($('iframe').position()).show();
+
+            clearTimeout(window.timr2);
+            window.timr2 = setTimeout(() => { $('.size-out').hide() }, 2000);
         });
 
         $('iframe').on('mouseup click', e => {
             var w = data.width = $('iframe').width(), h = data.height = $('iframe').height();
-            setTimeout(() => { $('.size-out').hide() }, 2000);
+            clearTimeout(window.timr2);
+            window.timr2 = setTimeout(() => { $('.size-out').hide() }, 2000);
             update();
         });
 
