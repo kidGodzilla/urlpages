@@ -24,10 +24,12 @@
     }
 
     var hash = location.hash.slice(1);
-    var server = 'http://jspen.co';
+    var server = 'http://jspen.co/' + location.search;
 
     gett('https://md5s.jspen.co/' + hash + '.t', function (data) {
-       if (data && !data.indexOf('/')) location.href = server + data;
+       if (data && !data.indexOf('/')) {
+           location.href = server + data.slice(1);
+       }
     });
 </script>
 </body>
