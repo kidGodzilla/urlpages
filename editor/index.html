@@ -197,6 +197,17 @@
         }
         .code { display: none !important; }
 
+        .size-out {
+            z-index: 9999999999;
+            border-radius: 2px;
+            position: absolute;
+            background: #eee;
+            padding: 3px;
+            color: #222;
+            margin: 1px;
+            display: none;
+        }
+
         @media screen and (max-width: 720px) {
             body, .main { overflow-y: scroll; }
             #topbar .namespace, .toggle-view, .new, .delete, .fork, .me, .splitter { display: none !important; }
@@ -275,6 +286,7 @@
     <div class="splitter horizontal"></div>
 
     <iframe src="" frameborder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    <div class="size-out"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -527,8 +539,14 @@
 
         $('iframe').css('resize', 'both').css('overflow', 'auto').css('height', (window.data && data.height || $('iframe').height()) + 'px');
 
+        $('iframe').on('mousemove', e => {
+            var w = data.width = $('iframe').width(), h = data.height = $('iframe').height();
+            $('.size-out').text(`${ w }x${ h }`).css($('iframe').position()).show();
+        });
+
         $('iframe').on('mouseup click', e => {
             var w = data.width = $('iframe').width(), h = data.height = $('iframe').height();
+            setTimeout(() => { $('.size-out').hide() }, 2000);
             update();
         });
 
